@@ -1,0 +1,122 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  min-height: 100vh;
+  background-color: #b5495b;
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+label,
+input {
+  width: 100%;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+button,
+input {
+  outline: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 700px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-grow: 0.7;
+  max-width: 400px;
+  min-height: 400px;
+  backdrop-filter: blur(20px);
+  border-radius: 8px;
+}
+
+.form-control {
+  width: 100%;
+  border-radius: 50px;
+  background: #b5495b;
+}
+
+.form-control > label {
+  position: relative;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: white;
+  padding-left: 0.5rem;
+  text-transform: uppercase;
+  z-index: 20;
+}
+
+.form-control > input {
+  height: 60px;
+  color: white;
+  font-size: 18px;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 32px;
+  box-shadow: 20px 20px 60px #9a3e4d, -20px -20px 60px #d05469;
+  caret-color: white;
+  transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-control > input:hover {
+  box-shadow: 10px 10px 40px #8a3643, -10px -10px 40px #ba485b;
+}
+
+form .submit-button {
+  position: relative;
+  color: white;
+  font-size: 24px;
+  letter-spacing: 1px;
+  padding: 1rem 1.7rem;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -5;
+}
+
+form .submit-button:hover {
+  background: #bc495c;
+  box-shadow: 20px 20px 60px #a03e4e, -20px -20px 60px #d8546a;
+}
+
+form .submit-button:active {
+  scale: 0.95;
+}
+
+form .invalid {
+  color: white;
+  font-size: 12px;
+  padding-left: 0.5rem;
+  height: 14px;
+}
+
+.hello-world {
+  flex-grow: 0.3;
+}
+
+.respond {
+  font-size: 40px;
+
+  color: white;
+  margin: 1rem;
+}
