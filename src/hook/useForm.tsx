@@ -1,89 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useReducer, useState } from 'react';
 
-interface LoginReq {
-  account: string;
-  pwd: string;
-}
+export function useForm<T, U>(reqProps: T, validationRule: U) {
+  const [loginReq, dispatch] = useReducer(
+    (state: T, action: any) => ({
+      ...state,
+      ...action,
+    }),
+    reqProps
+  );
 
-interface ValidationRule {
-  account: (v: string) => boolean;
-  pwd: (v: string) => boolean;
-}
+  function result(props: T) {
+    const vResult = {};
+  }
 
-interface Validation {
-  account: {
-    isError: boolean;
-    error: string;
-  };
-  pwd: {
-    isError: boolean;
-    error: string;
-  };
-  allFieldsValid: () => boolean;
-}
-
-export function useForm(loginReq: LoginReq, validationRule: ValidationRule) {
-  const [account, setAccount] = useState(loginReq.account);
-  const [pwd, setPwd] = useState(loginReq.pwd);
-  const [validationResult, setValidationResult] = useState<Validation>({
-    account: {
-      isError: false,
-      error: 'Please enter at least 9 characters',
-    },
-    pwd: {
-      isError: false,
-      error: 'Please enter at least 13 characters',
-    },
-    allFieldsValid: () => {
-      let isValid = true;
-
-      if (!validationRule.account(account)) {
-        console.log(account);
-        isValid = false;
-        const newValidationResult = {
-          ...validationResult,
-          account: {
-            ...validationResult.account,
-            isError: true,
-          },
-        };
-        setValidationResult(newValidationResult);
-        return isValid;
-      }
-
-      if (!validationRule.pwd(pwd)) {
-        isValid = false;
-        const newValidationResult = {
-          ...validationResult,
-          pwd: {
-            ...validationResult.pwd,
-            isError: true,
-          },
-        };
-        setValidationResult(newValidationResult);
-        return isValid;
-      }
-
-      return isValid;
-    },
-  });
+  const [validationResult, setValidationResult] = useState();
 
   function handleSetAccount(value: string) {
-    console.log(account);
-    setAccount(value.trim());
+    dispatch({ account: value });
   }
 
   function handleSetPwd(value: string) {
-    console.log(value);
-    setPwd(value.trim());
+    dispatch({ pwd: value });
   }
 
-  // function handleInputError(inputField: string) {
-  //   const newValidationResult = {};
-  // }
-
   return {
-    loginReq: { account, pwd },
+    loginReq,
     formSetter: { account: handleSetAccount, pwd: handleSetPwd },
     validationResult,
   };
