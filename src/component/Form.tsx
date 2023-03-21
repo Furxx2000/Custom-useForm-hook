@@ -1,31 +1,23 @@
-interface Props {
-  loginReq: { account: string; pwd: string };
-  formSetter: {
-    account: (value: string) => void;
-    pwd: (value: string) => void;
-  };
-  validationResult: {
-    account: {
-      isError: boolean;
-      error: string;
-    };
-    pwd: {
-      isError: boolean;
-      error: string;
-    };
-    allFieldsValid: () => boolean;
-  };
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}
+import { useForm } from '../hook/useForm';
 
-export function Form({
-  loginReq,
-  formSetter,
-  validationResult,
-  handleSubmit,
-}: Props) {
+const validationRule = {
+  account: (v: string) => v.length > 8,
+  pwd: (v: string) => v.length > 12,
+};
+
+const defaultReq = {
+  account: '',
+  pwd: '',
+};
+
+export function Form() {
+  const { loginReq, formSetter, validationResult } = useForm(
+    defaultReq,
+    validationRule
+  );
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <div className='form-control'>
         <label htmlFor='account'>Account</label>
         <input
@@ -34,8 +26,9 @@ export function Form({
           onChange={(e) => formSetter.account(e.target.value)}
         />
         <div className='invalid'>
-          {validationResult?.account.isError &&
-            validationResult?.account?.error}
+          {/* {validationResult?.account.isError &&
+            validationResult?.account?.error} */}
+          {loginReq.account}
         </div>
       </div>
 
@@ -47,7 +40,8 @@ export function Form({
           onChange={(e) => formSetter.pwd(e.target.value)}
         />
         <div className='invalid'>
-          {validationResult?.pwd.isError && validationResult?.pwd?.error}
+          {/* {validationResult?.pwd.isError && validationResult?.pwd?.error} */}
+          {loginReq.pwd}
         </div>
       </div>
 
