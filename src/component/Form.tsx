@@ -16,19 +16,26 @@ export function Form() {
     validationRule
   );
 
+  function doSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (validationResult.allFieldsValid()) {
+      console.log('Valid');
+    } else {
+      console.log('Not valid');
+    }
+  }
+
   return (
-    <form>
+    <form onSubmit={doSubmit}>
       <div className='form-control'>
         <label htmlFor='account'>Account</label>
         <input
           type='text'
           value={loginReq?.account}
-          onChange={(e) => formSetter.account(e.target.value)}
+          onChange={formSetter.account}
         />
         <div className='invalid'>
-          {/* {validationResult?.account.isError &&
-            validationResult?.account?.error} */}
-          {loginReq.account}
+          {validationResult?.account?.error && 'Please enter valid characters'}
         </div>
       </div>
 
@@ -37,12 +44,9 @@ export function Form() {
         <input
           type='password'
           value={loginReq?.pwd}
-          onChange={(e) => formSetter.pwd(e.target.value)}
+          onChange={formSetter.pwd}
         />
-        <div className='invalid'>
-          {/* {validationResult?.pwd.isError && validationResult?.pwd?.error} */}
-          {loginReq.pwd}
-        </div>
+        <div className='invalid'>{validationResult?.pwd?.error}</div>
       </div>
 
       <button className='submit-button'>Submit</button>
