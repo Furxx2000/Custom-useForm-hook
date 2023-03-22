@@ -1,6 +1,6 @@
-import { useReducer, useState } from 'react';
+import { useReducer, useState, useEffect } from 'react';
 
-export function useForm<T, U>(reqProps: T, validationRule: U) {
+export function useForm<T, U extends {}>(reqProps: T, validationRule: U) {
   const [loginReq, dispatch] = useReducer(
     (state: T, action: any) => ({
       ...state,
@@ -8,19 +8,42 @@ export function useForm<T, U>(reqProps: T, validationRule: U) {
     }),
     reqProps
   );
+  const [validationResult, setValidationResult] = useState(() =>
+    convertRuleToResult(validationRule)
+  );
 
-  function result(props: T) {
-    const vResult = {};
+  function convertRuleToResult(obj: U) {
+    const keyArr = Object.keys(obj);
+    const keyObj = keyArr.reduce((accumulator, value) => {
+      return {
+        ...accumulator,
+        [value]: { error: !validationRule[value](loginReq[value]) },
+        allFieldsValid: () =>
+          keyArr.every((key) => validationRule[key](loginReq[key])),
+      };
+    }, {});
+    console.log(keyObj);
+    return keyObj;
   }
 
-  const [validationResult, setValidationResult] = useState();
+  useEffect(() => {
+    const keyArr = Object.keys(validationResult);
+    setValidationResult(convertRuleToResult(validationRule));
+    // const newObj = keyArr.reduce((accumulator, value) => {
+    //   return {
+    //     ...accumulator,
+    //     [value]: { error: !validationRule[value](loginReq[value]) },
+    //   };
+    // }, {});
+    // setValidationResult(newObj);
+  }, [loginReq]);
 
-  function handleSetAccount(value: string) {
-    dispatch({ account: value });
+  function handleSetAccount(e: React.ChangeEvent<HTMLInputElement>) {
+    dispatch({ account: e.target.value });
   }
 
-  function handleSetPwd(value: string) {
-    dispatch({ pwd: value });
+  function handleSetPwd(e: React.ChangeEvent<HTMLInputElement>) {
+    dispatch({ pwd: e.target.value });
   }
 
   return {
