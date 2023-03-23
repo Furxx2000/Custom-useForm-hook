@@ -12,6 +12,12 @@ export function HelloWorld({ foo, bar }: Apis) {
         loadData={() => foo()}
         renderData={(data: string) => <div className='respond'>{data}</div>}
       />
+
+      {/* <LoadingWrapper
+        loadData={() => foo()}
+        renderData={(data: string) => <div className='respond'>{data}</div>}
+      /> */}
+
       <LoadingWrapper
         loadData={() => bar()}
         renderData={(data: number) => <div className='respond'>{data}</div>}
