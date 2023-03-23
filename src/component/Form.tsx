@@ -1,26 +1,22 @@
 import { useForm } from '../hook/useForm';
 
-const validationRule = {
-  account: (v: string) => v.length > 8,
-  pwd: (v: string) => v.length > 12,
-};
-
-const defaultReq = {
-  account: '',
-  pwd: '',
-};
-
 export function Form() {
-  const { loginReq, formSetter, validationResult } = useForm(
-    defaultReq,
-    validationRule
-  );
+  const {
+    loginReq,
+    formSetter,
+    validationResult,
+    isReqSubmitted,
+    handleIsReqSubmitted,
+  } = useForm();
 
   function doSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     if (validationResult.allFieldsValid()) {
       console.log('Valid');
+      console.log(loginReq);
     } else {
+      handleIsReqSubmitted(false);
       console.log('Not valid');
     }
   }
@@ -32,10 +28,12 @@ export function Form() {
         <input
           type='text'
           value={loginReq?.account}
-          onChange={formSetter.account}
+          onChange={formSetter?.account}
         />
         <div className='invalid'>
-          {validationResult?.account?.error && 'Please enter valid characters'}
+          {validationResult?.account?.error &&
+            !isReqSubmitted &&
+            'Please enter at least 9 characters'}
         </div>
       </div>
 
@@ -44,9 +42,13 @@ export function Form() {
         <input
           type='password'
           value={loginReq?.pwd}
-          onChange={formSetter.pwd}
+          onChange={formSetter?.pwd}
         />
-        <div className='invalid'>{validationResult?.pwd?.error}</div>
+        <div className='invalid'>
+          {validationResult?.pwd?.error &&
+            !isReqSubmitted &&
+            'Please enter at least 13 characters'}
+        </div>
       </div>
 
       <button className='submit-button'>Submit</button>
