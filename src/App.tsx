@@ -1,8 +1,6 @@
 import { FormContext, useFormSource } from './hook/useForm';
-import { useForm } from './hook/useForm';
-import { HelloWorld } from './component/HelloWorld';
-import { Form } from './component/Form';
-import { apiCall } from './ApiCall';
+
+import { Content } from './component/Content';
 import './css/App.css';
 
 interface LoginReq {
@@ -24,18 +22,6 @@ const defaultReq = {
 };
 
 function App() {
-  function foo() {
-    return apiCall(3, 'Hello world!');
-  }
-
-  function bar() {
-    return apiCall(4, 2023);
-  }
-
-  function user() {
-    return apiCall(3);
-  }
-
   return (
     <FormContext.Provider
       value={useFormSource<LoginReq, ValidationRule>(
@@ -43,10 +29,7 @@ function App() {
         validationRule
       )}
     >
-      <main>
-        <HelloWorld foo={foo} bar={bar} />
-        <Form />
-      </main>
+      <Content />
     </FormContext.Provider>
   );
 }
