@@ -28,7 +28,7 @@ export function useFormSource<
   );
 
   // State of
-  const [isReqSubmitted, setIsReqSubmitted] = useState<boolean>();
+  const [isReqSubmitted, setIsReqSubmitted] = useState<boolean>(false);
 
   // State of validation result
   const [validationResult, setValidationResult] = useState<ValidationResult<U>>(
@@ -37,8 +37,9 @@ export function useFormSource<
 
   // Check validation result when login request value change
   useEffect(() => {
-    if (!isReqSubmitted) setIsReqSubmitted(true);
     setValidationResult(convertRuleToResult(validationRule));
+    if (isReqSubmitted && !validationResult.allFieldsValid())
+      setIsReqSubmitted(false);
   }, [loginReq]);
 
   function convertRuleToResult(obj: U) {
