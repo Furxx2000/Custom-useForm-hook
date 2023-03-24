@@ -12,11 +12,12 @@ export function Form() {
   function doSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    handleIsReqSubmitted(true);
+
     if (validationResult.allFieldsValid()) {
       console.log('Valid');
       console.log(loginReq);
     } else {
-      handleIsReqSubmitted(false);
       console.log('Not valid');
     }
   }
@@ -32,7 +33,7 @@ export function Form() {
         />
         <div className='invalid'>
           {validationResult?.account?.error &&
-            !isReqSubmitted &&
+            isReqSubmitted &&
             'Please enter at least 9 characters'}
         </div>
       </div>
@@ -46,7 +47,7 @@ export function Form() {
         />
         <div className='invalid'>
           {validationResult?.pwd?.error &&
-            !isReqSubmitted &&
+            isReqSubmitted &&
             'Please enter at least 13 characters'}
         </div>
       </div>
